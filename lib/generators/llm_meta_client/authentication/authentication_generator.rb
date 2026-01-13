@@ -16,31 +16,28 @@ module LlmMetaClient
       def enable_devise
         if File.read("Gemfile").include?('gem "devise"')
           uncomment_lines "Gemfile", /gem "devise"/
-          run "bundle install --quiet"
         else
           gem "devise"
-          run "bundle install --quiet"
         end
+        run "bundle install --quiet"
       end
 
       def enable_omniauth
         if File.read("Gemfile").include?('gem "omniauth"')
           uncomment_lines "Gemfile", /gem "omniauth"/
-          run "bundle install --quiet"
         else
           gem "omniauth"
-          run "bundle install --quiet"
         end
+        run "bundle install --quiet"
       end
 
       def enable_omniauth_google_oauth2
         if File.read("Gemfile").include?('gem "omniauth-google-oauth2')
           uncomment_lines "Gemfile", /gem "omniauth-google-oauth2"/
-          run "bundle install --quiet"
         else
           gem "omniauth-google-oauth2"
-          run "bundle install --quiet"
         end
+        run "bundle install --quiet"
       end
 
       def enable_omniauth_rails_csrf_protection
