@@ -47,6 +47,7 @@ module LlmMetaClient
         template "app/views/layouts/application.html.erb"
 
         template "config/initializers/devise.rb"
+        template "config/initializers/omniauth.rb"
         template "config/locales/devise.en.yml"
       end
 
