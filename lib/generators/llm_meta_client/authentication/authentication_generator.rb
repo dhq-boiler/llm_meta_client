@@ -14,14 +14,21 @@ module LlmMetaClient
       end
 
       def enable_devise
-        if File.read("Gemfile").include?('gem "devise"')
-          uncomment_lines "Gemfile", /gem "devise"/
-          run "bundle install --quiet"
-        else
-          gem "devise"
-          run "bundle install --quiet"
-        end
+        enable_gem "devise"
       end
+
+      def enable_omniauth
+        enable_gem "omniauth"
+      end
+
+      def enable_omniauth_google_oauth2
+        enable_gem "omniauth-google-oauth2"
+      end
+
+      def enable_omniauth_rails_csrf_protection
+        enable_gem "omniauth-rails_csrf_protection"
+      end
+
 
       def create_authentication_file
         template "app/models/llm_meta_server_resource.rb"
@@ -56,6 +63,17 @@ module LlmMetaClient
 
       def add_migrations
         migration_template "db/migrate/create_users.rb", "db/migrate/create_users.rb"
+      end
+
+      private
+
+      def enable_gem(gem_name)
+        if File.read("Gemfile").include?("gem \"#{gem_name}\"")
+          uncomment_lines "Gemfile", /gem "#{gem_name}"/
+        else
+          gem gem_name
+        end
+        run "bundle install --quiet"
       end
     end
   end
