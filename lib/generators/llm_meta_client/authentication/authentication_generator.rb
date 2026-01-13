@@ -14,41 +14,21 @@ module LlmMetaClient
       end
 
       def enable_devise
-        if File.read("Gemfile").include?('gem "devise"')
-          uncomment_lines "Gemfile", /gem "devise"/
-        else
-          gem "devise"
-        end
-        run "bundle install --quiet"
+        enable_gem "devise"
       end
 
       def enable_omniauth
-        if File.read("Gemfile").include?('gem "omniauth"')
-          uncomment_lines "Gemfile", /gem "omniauth"/
-        else
-          gem "omniauth"
-        end
-        run "bundle install --quiet"
+        enable_gem "omniauth"
       end
 
       def enable_omniauth_google_oauth2
-        if File.read("Gemfile").include?('gem "omniauth-google-oauth2')
-          uncomment_lines "Gemfile", /gem "omniauth-google-oauth2"/
-        else
-          gem "omniauth-google-oauth2"
-        end
-        run "bundle install --quiet"
+        enable_gem "omniauth-google-oauth2"
       end
 
       def enable_omniauth_rails_csrf_protection
-        if File.read("Gemfile").include?('gem "omniauth-rails_csrf_protection')
-          uncomment_lines "Gemfile", /gem "omniauth-rails_csrf_protection"/
-          run "bundle install --quiet"
-        else
-          gem "omniauth-rails_csrf_protection"
-          run "bundle install --quiet"
-        end
+        enable_gem "omniauth-rails_csrf_protection"
       end
+
 
       def create_authentication_file
         template "app/models/llm_meta_server_resource.rb"
@@ -83,6 +63,17 @@ module LlmMetaClient
 
       def add_migrations
         migration_template "db/migrate/create_users.rb", "db/migrate/create_users.rb"
+      end
+
+      private
+
+      def enable_gem(gem_name)
+        if File.read("Gemfile").include?("gem \"#{gem_name}\"")
+          uncomment_lines "Gemfile", /gem "#{gem_name}"/
+        else
+          gem gem_name
+        end
+        run "bundle install --quiet"
       end
     end
   end
