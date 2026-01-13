@@ -16,9 +16,10 @@ module LlmMetaClient
       def enable_devise
         if File.read("Gemfile").include?('gem "devise"')
           uncomment_lines "Gemfile", /gem "devise"/
-          bundle_command("install --quiet")
+          run "bundle install --quiet"
         else
-          bundle_command("add devise", {}, quiet: true)
+          gem "devise"
+          run "bundle install --quiet"
         end
       end
 
