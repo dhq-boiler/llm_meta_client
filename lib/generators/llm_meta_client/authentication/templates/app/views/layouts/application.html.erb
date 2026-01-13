@@ -27,7 +27,7 @@
 
 <div class="body">
   <div class="sidebar">
-    <%%= render "layouts/sidebar" %>
+    <%%= render "layouts/sidebar", locals: { history: @history, active_uuid: @active_uuid } %>
   </div>
   <div class="content">
     <%% if alert %>
