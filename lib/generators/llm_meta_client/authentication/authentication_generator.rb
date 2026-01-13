@@ -42,6 +42,9 @@ module LlmMetaClient
         template "app/views/shared/_api_key_field.html.erb"
         template "app/views/shared/_model_field.html.erb"
         template "app/views/shared/_submit_row.html.erb"
+        template "app/views/layouts/_header.html.erb"
+        template "app/views/layouts/_sidebar.html.erb"
+        template "app/views/layouts/application.html.erb"
 
         template "config/initializers/devise.rb"
         template "config/locales/devise.en.yml"
