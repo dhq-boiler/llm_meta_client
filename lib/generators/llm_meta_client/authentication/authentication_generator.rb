@@ -13,6 +13,15 @@ module LlmMetaClient
         ActiveRecord::Migration.next_migration_number(next_migration_number)
       end
 
+      def enable_devise
+        if File.read("Gemfile").include?('gem "devise"')
+          uncomment_lines "Gemfile", /gem "devise"/
+          bundle_command("install --quiet")
+        else
+          bundle_command("add devise", {}, quiet: true)
+        end
+      end
+
       def create_authentication_file
         template "app/models/llm_meta_server_resource.rb"
         template "app/models/user.rb"
@@ -25,6 +34,9 @@ module LlmMetaClient
         template "app/views/shared/_api_key_field.html.erb"
         template "app/views/shared/_model_field.html.erb"
         template "app/views/shared/_submit_row.html.erb"
+
+        template "config/initializers/devise.rb"
+        template "config/locales/devise.en.yml"
       end
 
       def configure_authentication_routes

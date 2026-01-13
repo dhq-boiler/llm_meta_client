@@ -296,6 +296,23 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
+  # ==> OmniAuth Configuration for Google OAuth2
+  # Google Sign-In integration using omniauth-google-oauth2 gem
+  # Requires GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables
+  # scope: 'email,profile,openid' - Requests access to user's email, basic profile information, and OpenID Connect
+  # prompt: 'select_account' - Forces account selection screen even if user is already signed in
+  # access_type: 'offline' - Allows the application to receive refresh tokens
+  # include_granted_scopes: true - Enables incremental authorization
+  config.omniauth :google_oauth2,
+                  ENV["GOOGLE_CLIENT_ID"],
+                  ENV["GOOGLE_CLIENT_SECRET"],
+                  {
+                    scope: "email,profile,openid",
+                    prompt: "select_account",
+                    access_type: "offline",
+                    include_granted_scopes: true
+                  }
+
   # ==> Hotwire/Turbo configuration
   # When using Devise with Hotwire/Turbo, the http status for error responses
   # and some redirects must match the following. The default in Devise for existing
