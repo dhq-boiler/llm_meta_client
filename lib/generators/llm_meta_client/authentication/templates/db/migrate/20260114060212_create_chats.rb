@@ -1,6 +1,6 @@
-class CreateConversations < ActiveRecord::Migration[8.1]
+class CreateChats < ActiveRecord::Migration[8.1]
   def change
-    create_table :conversations do |t|
+    create_table :chats do |t|
       t.references :user, null: true, foreign_key: true
       t.string :llm_uuid
       t.string :model
