@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%%= content_for(:title) || "LLM Meta Client" %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <%%= csrf_meta_tags %>
+  <%%= csp_meta_tag %>
+
+  <%%= yield :head %>
+
+  <%% # Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+  <%% #= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+  <link rel="icon" href="/icon.png" type="image/png">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <%% # Includes all stylesheet files in app/assets/stylesheets %>
+  <%%= stylesheet_link_tag :app %>
+  <%%= stylesheet_link_tag "prompt_manager/history", "data-turbo-track": "reload" %>
+  <%%= stylesheet_link_tag "chat_manager/chat", "data-turbo-track": "reload" %>
+  <%%= javascript_importmap_tags %>
+</head>
+
+<body>
+<%%= render "layouts/header" %>
+
+<div class="body">
+  <%% if user_signed_in? %>
+    <div class="sidebar sidebar-left">
+      <div id="chat-sidebar">
+        <%%= chat_list(->(id) { chat_path(id) }, active_uuid: @active_chat_uuid, download_csv_path: ->(id) { download_csv_chat_path(id) }, download_all_csv_path: download_all_csv_chats_path) %>
+      </div>
+    </div>
+  <%% end %>
+  <div class="content <%%= 'content-full' if controller_name == 'chats' %>">
+    <%% if alert %>
+      <div class="flash alert"><%%= alert %></div>
+    <%% end %>
+    <%% if notice %>
+      <div class="flash notice"><%%= notice %></div>
+    <%% end %>
+    <%% if flash[:info] %>
+      <div class="flash info"><%%= flash[:info] %></div>
+    <%% end %>
+
+    <%%= yield %>
+  </div>
+  <div class="sidebar sidebar-right">
+    <div id="history-sidebar">
+      <%%= history_list(->(execution_id) { prompt_path(execution_id) }, active_uuid: @active_message_uuid) %>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<%% content_for :title, "Chat - LLM Meta Client" %>
+
+<div class="chat-container" data-chat-id="<%%= @chat&.id %>">
+  <div class="chat-messages" id="chat-messages">
+    <div id="messages-list">
+      <%%= render partial: "chats/messages_list", locals: { messages: @chat&.messages } %>
+    </div>
+  </div>
+
+  <div class="chat-input-container">
+    <%%= form_with url: chats_path, method: :post, class: "chat-form", data: { controller: "chats-form llm-selector", guest: current_user.nil?, action: "submit->chats-form#submit llm-selector:changed->chats-form#updateSubmitButton" } do |f| %>
+      <%% if @llm_families.present? %>
+        <div class="llm-selector-wrapper">
+          <%%= render "shared/family_field", llm_families: @llm_families, stimulus_controller: "llm-selector" %>
+          <%%= render "shared/api_key_field", stimulus_controller: "llm-selector" %>
+          <%%= render "shared/model_field", stimulus_controller: "llm-selector" %>
+        </div>
+      <%% end %>
+      <div class="input-wrapper">
+        <%%= f.text_area :message,
+            placeholder: "Enter your message...",
+            class: "chat-input",
+            rows: 3,
+            autofocus: true,
+            required: true,
+            id: "message-input",
+            data: { "chats-form-target": "prompt", action: "input->chats-form#updateSubmitButton" } %>
+      </div>
+      <%%= f.hidden_field :branch_from_uuid, value: params.dig(:chat, :branch_from_uuid) %>
+      <div class="button-wrapper">
+        <%%= f.button type: "submit",
+            class: "send-button",
+            disabled: true,
+            data: {
+              "chats-form-target": "submit"
+            } do %>
+          <i class="bi bi-send-fill"></i>
+        <%% end %>
+      </div>
+    <%% end %>
+  </div>
+</div>
+
+
+<script>
+
+  // Scroll chat messages to bottom
+  document.addEventListener('DOMContentLoaded', function() {
+    const chatMessages = document.getElementById('chat-messages');
+    if (chatMessages) {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+  });
+
+  // Scroll to bottom after form submission
+  window.addEventListener('load', function() {
+    const chatMessages = document.getElementById('chat-messages');
+    if (chatMessages) {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+  });
+</script>
