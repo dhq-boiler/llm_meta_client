@@ -31,20 +31,10 @@ module LlmMetaClient
 
 
       def create_authentication_file
-        template "app/models/llm_meta_server_resource.rb"
         template "app/models/user.rb"
 
         template "app/controllers/users/omniauth_callbacks_controller.rb"
         template "app/controllers/users/sessions_controller.rb"
-
-        template "app/lib/exceptions.rb"
-
-        template "app/views/shared/_api_key_field.html.erb"
-        template "app/views/shared/_model_field.html.erb"
-        template "app/views/shared/_submit_row.html.erb"
-        template "app/views/layouts/_header.html.erb"
-        template "app/views/layouts/_sidebar.html.erb"
-        template "app/views/layouts/application.html.erb"
 
         template "config/initializers/devise.rb"
         template "config/initializers/omniauth.rb"
