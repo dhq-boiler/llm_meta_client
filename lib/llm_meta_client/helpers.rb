@@ -1,6 +1,6 @@
 module LlmMetaClient
   module Helpers
-    include PromptManager::Helpers
+    include PromptNavigator::Helpers
     include ChatManager::Helpers
   end
 end

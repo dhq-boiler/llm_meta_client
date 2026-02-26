@@ -1,6 +1,6 @@
 require "llm_meta_client/version"
 require "llm_meta_client/engine"
-require "prompt_manager"
+require "prompt_navigator"
 require "chat_manager"
 require "llm_meta_client/helpers"
 require "llm_meta_client/history_manageable"

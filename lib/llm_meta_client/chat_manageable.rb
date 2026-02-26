@@ -1,4 +1,4 @@
-require "prompt_manager"
+require "chat_manager"
 
 module LlmMetaClient
   module ChatManageable

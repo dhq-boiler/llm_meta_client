@@ -1,11 +1,11 @@
-require "prompt_manager"
+require "prompt_navigator"
 
 module LlmMetaClient
   module HistoryManageable
     extend ActiveSupport::Concern
 
     included do
-      include PromptManager::HistoryManageable
+      include PromptNavigator::HistoryManageable
     end
   end
 end
