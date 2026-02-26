@@ -11,7 +11,7 @@ class Chat < ApplicationRecord
 
   # Find existing chat from session or create new one
   class << self
-    def find_or_switch_for_session(session, current_user, llm_uuid: llm_uuid, model: model)
+    def find_or_switch_for_session(session, current_user, llm_uuid: nil, model: nil)
       chat = find_by_session_chat_id(session, current_user)
       return chat if llm_uuid.nil? || model.nil?
 
