@@ -22,4 +22,6 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", ">= 8.1.1"
+  spec.add_dependency "prompt_navigator"
+  spec.add_dependency "chat_manager"
 end
