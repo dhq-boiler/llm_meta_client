@@ -1,9 +1,9 @@
 module LlmMetaClient
   class ServerQuery
     def call(id_token, api_key_uuid, model_id, context, user_content)
-      Rails.logger.info "Context: #{context}" if Rails.env.development?
+      debug_log "Context: #{context}"
       context_and_user_content = "Context:#{context}, User Prompt: #{user_content}"
-      Rails.logger.info "Request to LLM: \n===>\n#{context_and_user_content}\n===>" if Rails.env.development?
+      debug_log "Request to LLM: \n===>\n#{context_and_user_content}\n===>"
 
       response = request(api_key_uuid, id_token, model_id, context_and_user_content)
 
@@ -17,12 +17,16 @@ module LlmMetaClient
 
       raise StandardError, "LLM server returned empty response" if content.blank?
 
-      Rails.logger.info "Response from LLM: \n<===\n#{content}\n<===" if Rails.env.development?
+      debug_log "Response from LLM: \n<===\n#{content}\n<==>"
 
       content
     end
 
     private
+
+    def debug_log(message)
+      Rails.logger.info(message) if Rails.env.development?
+    end
 
     def request(api_key_uuid, id_token, model_id, user_content)
       headers = { "Content-Type" => "application/json" }
