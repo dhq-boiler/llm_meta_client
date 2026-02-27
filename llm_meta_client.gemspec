@@ -5,23 +5,24 @@ Gem::Specification.new do |spec|
   spec.version     = LlmMetaClient::VERSION
   spec.authors     = [ "dhq_boiler" ]
   spec.email       = [ "dhq_boiler@live.jp" ]
-  spec.homepage    = "TODO"
-  spec.summary     = "TODO: Summary of LlmMetaClient."
-  spec.description = "TODO: Description of LlmMetaClient."
+  spec.homepage    = "https://github.com/dhq-boiler/llm_meta_client"
+  spec.summary     = "A Rails Engine for integrating multiple LLM providers into your application."
+  spec.description = "llm_meta_client provides a Rails Engine with scaffold and authentication generators for building LLM-powered chat applications. Supports OpenAI, Anthropic, Google, and Ollama providers."
+  spec.license     = "MIT"
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+  spec.required_ruby_version = ">= 3.4"
 
+  spec.metadata["allowed_push_host"] = "https://rubygems.org"
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
-  spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+  spec.metadata["source_code_uri"] = "https://github.com/dhq-boiler/llm_meta_client/tree/main"
+  spec.metadata["changelog_uri"] = "https://github.com/dhq-boiler/llm_meta_client/blob/main/CHANGELOG.md"
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+    Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md", "CHANGELOG.md"]
   end
 
-  spec.add_dependency "rails", ">= 8.1.1"
-  spec.add_dependency "prompt_navigator"
-  spec.add_dependency "chat_manager"
+  spec.add_dependency "rails", "~> 8.1", ">= 8.1.1"
+  spec.add_dependency "httparty", "~> 0.22"
+  spec.add_dependency "prompt_navigator", "~> 0.1"
+  spec.add_dependency "chat_manager", "~> 0.1"
 end

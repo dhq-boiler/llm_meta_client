@@ -2,9 +2,10 @@ PATH
   remote: .
   specs:
     llm_meta_client (0.1.0)
-      chat_manager
-      prompt_navigator
-      rails (>= 8.1.1)
+      chat_manager (~> 0.1)
+      httparty (~> 0.22)
+      prompt_navigator (~> 0.1)
+      rails (~> 8.1, >= 8.1.1)
 
 GEM
   remote: https://rubygems.org/
