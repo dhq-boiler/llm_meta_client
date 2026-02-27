@@ -1,0 +1,9 @@
+<%% if messages.present? %>
+  <%% messages.each do |message| %>
+    <%%= render partial: "chats/message", locals: { message: message } %>
+  <%% end %>
+<%% else %>
+  <div class="empty-state">
+    <p>👋 Hello! How can I help you?</p>
+  </div>
+<%% end %>
