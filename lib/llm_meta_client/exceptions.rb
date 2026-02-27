@@ -5,5 +5,9 @@ module LlmMetaClient
         super(msg)
       end
     end
+
+    class ServerError < StandardError; end
+    class InvalidResponseError < StandardError; end
+    class EmptyResponseError < StandardError; end
   end
 end

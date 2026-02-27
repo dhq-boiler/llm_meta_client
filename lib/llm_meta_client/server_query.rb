@@ -7,15 +7,15 @@ module LlmMetaClient
 
       response = request(api_key_uuid, id_token, model_id, context_and_user_content)
 
-      raise StandardError, "LLM server returned HTTP #{response.code}" unless response.success?
+      raise Exceptions::ServerError, "LLM server returned HTTP #{response.code}" unless response.success?
 
       response_body = response.parsed_response
 
-      raise StandardError, "LLM server returned non-JSON response" unless response_body.is_a?(Hash)
+      raise Exceptions::InvalidResponseError, "LLM server returned non-JSON response" unless response_body.is_a?(Hash)
 
       content = response_body.dig("response", "message") || ""
 
-      raise StandardError, "LLM server returned empty response" if content.blank?
+      raise Exceptions::EmptyResponseError, "LLM server returned empty response" if content.blank?
 
       debug_log "Response from LLM: \n<===\n#{content}\n<==>"
 
