@@ -44,10 +44,6 @@ module LlmMetaClient
         copy_file "app/javascript/popover.js"
       end
 
-      def create_channel
-        template "app/channels/chat_channel.rb"
-      end
-
       def create_initializer
         template "config/initializers/llm_service.rb"
       end
@@ -60,9 +56,6 @@ module LlmMetaClient
       def configure_routes
         route <<-RUBY
           root "chats#new"
-
-          # Mount Action Cable
-          mount ActionCable.server => "/cable"
 
           resources :chats, only: [ :new, :create, :edit, :update, :show ] do
             collection do
