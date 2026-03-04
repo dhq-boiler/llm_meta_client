@@ -109,18 +109,28 @@ Run `bundle install` again after the authentication generator.
 $ rails db:migrate
 ```
 
-### 4. Configure Environment Variables
+### 4. Configure Rails Credentials
+
+This gem uses **Rails credentials** (`rails credentials:edit`) instead of environment variables for configuration management.
 
 ```bash
-# Required
-export LLM_SERVICE_BASE_URL="http://localhost:3000"  # URL of your external LLM service
+$ EDITOR="vim" bin/rails credentials:edit
+```
 
-# Optional
-export SUMMARIZE_CONVERSATION_COUNT=10  # Number of recent messages for context (default: 10)
+Add the following entries to your credentials file:
+
+```yaml
+# Required
+llm_service:
+  base_url: "http://localhost:3000"  # URL of your external LLM service
+
+  # Optional
+  summarize_conversation_count: 10  # Number of recent messages for context (default: 10)
 
 # Required only if using the authentication generator
-export GOOGLE_CLIENT_ID="your-google-client-id"
-export GOOGLE_CLIENT_SECRET="your-google-client-secret"
+google:
+  client_id: "your-google-client-id"
+  client_secret: "your-google-client-secret"
 ```
 
 ### 5. Start the Application
@@ -133,14 +143,16 @@ $ rails server -p 3001
 
 ## Configuration
 
-| Variable | Default | Description |
-|---|---|---|
-| `LLM_SERVICE_BASE_URL` | `http://localhost:3000` | Base URL of the external LLM service backend |
-| `SUMMARIZE_CONVERSATION_COUNT` | `10` | Number of recent messages to include in conversation context |
-| `GOOGLE_CLIENT_ID` | — | Google OAuth2 client ID (authentication generator) |
-| `GOOGLE_CLIENT_SECRET` | — | Google OAuth2 client secret (authentication generator) |
+All configuration values are managed via **Rails credentials** (`rails credentials:edit`).
 
-These values are set in the generated initializer `config/initializers/llm_service.rb`.
+| Credential Key | Default | Description |
+|---|---|---|
+| `llm_service.base_url` | `http://localhost:3000` | Base URL of the external LLM service backend |
+| `llm_service.summarize_conversation_count` | `10` | Number of recent messages to include in conversation context |
+| `google.client_id` | — | Google OAuth2 client ID (authentication generator) |
+| `google.client_secret` | — | Google OAuth2 client secret (authentication generator) |
+
+These values are referenced in the generated initializers `config/initializers/llm_service.rb` and `config/initializers/devise.rb`.
 
 ## External LLM Service
 
