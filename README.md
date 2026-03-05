@@ -42,8 +42,8 @@ This gem is a **Rails frontend client** that delegates all LLM provider interact
 |---|---|---|
 | `rails` | `~> 8.1, >= 8.1.1` | Rails framework |
 | `httparty` | `~> 0.22` | HTTP client for external service communication |
-| `prompt_navigator` | `~> 0.1` | Prompt execution management and history |
-| `chat_manager` | `~> 0.1` | Chat sidebar, title generation, CSV export |
+| `prompt_navigator` | `~> 0.2` | Prompt execution management and history |
+| `chat_manager` | `~> 0.2` | Chat sidebar, title generation, CSV export |
 
 ## Installation
 
