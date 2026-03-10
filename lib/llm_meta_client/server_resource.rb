@@ -53,6 +53,38 @@ module LlmMetaClient
         build_families(ollama_opts, api_keys)
       end
 
+      def fetch_mcp_servers(jwt_token)
+        return [] if jwt_token.blank?
+
+        response = authenticated_get(jwt_token, "api/mcp_servers")
+
+        if response.success?
+          response.parsed_response["mcp_servers"] || []
+        else
+          Rails.logger.error "Failed to fetch MCP servers: HTTP #{response.code}"
+          []
+        end
+      rescue StandardError => e
+        Rails.logger.error "Error fetching MCP servers: #{e.class} - #{e.message}"
+        []
+      end
+
+      def fetch_mcp_tools(jwt_token, mcp_server_uuid)
+        return [] if jwt_token.blank? || mcp_server_uuid.blank?
+
+        response = authenticated_get(jwt_token, "api/mcp_servers/#{mcp_server_uuid}/tools")
+
+        if response.success?
+          response.parsed_response["tools"] || []
+        else
+          Rails.logger.error "Failed to fetch MCP tools for #{mcp_server_uuid}: HTTP #{response.code}"
+          []
+        end
+      rescue StandardError => e
+        Rails.logger.error "Error fetching MCP tools: #{e.class} - #{e.message}"
+        []
+      end
+
       private
 
       def build_families(ollama_opts, api_keys)
@@ -110,10 +142,7 @@ module LlmMetaClient
       end
 
       def llm_api_keys(jwt_token)
-        api_url = "#{Rails.configuration.llm_service_base_url}/api/llm_api_keys"
-        headers = { "Content-Type" => "application/json", "Authorization" => "Bearer #{jwt_token}" }
-
-        response = HTTParty.get api_url, headers: headers
+        response = authenticated_get(jwt_token, "api/llm_api_keys")
 
         if response.success?
           response.parsed_response["llm_api_keys"] || []
@@ -121,6 +150,15 @@ module LlmMetaClient
           Rails.logger.error "Failed to fetch LLM API keys: HTTP #{response.code}"
           []
         end
+      end
+
+      def authenticated_get(jwt_token, path)
+        api_url = "#{Rails.configuration.llm_service_base_url}/#{path}"
+        headers = {
+          "Content-Type" => "application/json",
+          "Authorization" => "Bearer #{jwt_token}"
+        }
+        HTTParty.get(api_url, headers: headers)
       end
     end
   end
