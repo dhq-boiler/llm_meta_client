@@ -20,6 +20,7 @@ module LlmMetaClient
       def create_controllers
         template "app/controllers/chats_controller.rb"
         template "app/controllers/prompts_controller.rb"
+        template "app/controllers/api/mcp_servers_controller.rb"
       end
 
       def create_views
