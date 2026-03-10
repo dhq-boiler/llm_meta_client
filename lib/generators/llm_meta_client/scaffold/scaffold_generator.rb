@@ -70,6 +70,12 @@ module LlmMetaClient
             end
           end
           resources :prompts, only: [ :show ]
+
+          namespace :api do
+            resources :mcp_servers, only: [ :index ], param: :uuid do
+              get :tools, on: :member
+            end
+          end
         RUBY
       end
 
