@@ -33,6 +33,7 @@ module LlmMetaClient
         template "app/views/shared/_family_field.html.erb"
         template "app/views/shared/_api_key_field.html.erb"
         template "app/views/shared/_model_field.html.erb"
+        template "app/views/shared/_tool_selector_field.html.erb"
         template "app/views/layouts/application.html.erb"
         template "app/views/layouts/_header.html.erb"
         template "app/views/layouts/_sidebar.html.erb"
@@ -42,6 +43,7 @@ module LlmMetaClient
         template "app/javascript/controllers/llm_selector_controller.js"
         template "app/javascript/controllers/chats_form_controller.js"
         template "app/javascript/controllers/chat_title_edit_controller.js"
+        template "app/javascript/controllers/tool_selector_controller.js"
         copy_file "app/javascript/popover.js"
       end
 
