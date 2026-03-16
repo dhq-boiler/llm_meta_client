@@ -1,11 +1,11 @@
 module LlmMetaClient
   class ServerQuery
-    def call(id_token, api_key_uuid, model_id, context, user_content, tool_ids: [])
+    def call(id_token, api_key_uuid, model_id, context, user_content, tool_ids: [], generation_settings: {})
       debug_log "Context: #{context}"
       context_and_user_content = "Context:#{context}, User Prompt: #{user_content}"
       debug_log "Request to LLM: \n===>\n#{context_and_user_content}\n===>"
 
-      response = request(api_key_uuid, id_token, model_id, context_and_user_content, tool_ids)
+      response = request(api_key_uuid, id_token, model_id, context_and_user_content, tool_ids, generation_settings)
 
       raise Exceptions::ServerError, "LLM server returned HTTP #{response.code}" unless response.success?
 
@@ -28,12 +28,13 @@ module LlmMetaClient
       Rails.logger.info(message) if Rails.env.development?
     end
 
-    def request(api_key_uuid, id_token, model_id, user_content, tool_ids)
+    def request(api_key_uuid, id_token, model_id, user_content, tool_ids, generation_settings)
       headers = { "Content-Type" => "application/json" }
       headers["Authorization"] = "Bearer #{id_token}" if id_token.present?
 
       body = { prompt: user_content.to_s }
       body[:tool_ids] = tool_ids if tool_ids.present?
+      body[:generation_settings] = generation_settings if generation_settings.present?
 
       HTTParty.post(
         url(api_key_uuid, model_id),
