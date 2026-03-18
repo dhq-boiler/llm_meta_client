@@ -51,16 +51,16 @@ class Chat < ApplicationRecord
   # Add a user message to the chat
   def add_user_message(message, model, branch_from_uuid = nil)
     parent_message = branch_from_uuid.present? ? messages.find_by(uuid: branch_from_uuid) : nil
-    prompt_execution = PromptManager::PromptExecution.create!(
+    prompt_execution = PromptNavigator::PromptExecution.create!(
       prompt: message,
       model: model,
       configuration: "",
-      previous_id: parent_message&.prompt_manager_prompt_execution_id
+      previous_id: parent_message&.prompt_navigator_prompt_execution_id
     )
 
     new_message = messages.create!(
       role: "user",
-      prompt_manager_prompt_execution: prompt_execution
+      prompt_navigator_prompt_execution: prompt_execution
     )
 
     [ prompt_execution, new_message ]
@@ -75,7 +75,7 @@ class Chat < ApplicationRecord
     )
     new_message = messages.create!(
       role: "assistant",
-      prompt_manager_prompt_execution: prompt_execution
+      prompt_navigator_prompt_execution: prompt_execution
     )
 
     new_message
@@ -84,18 +84,18 @@ class Chat < ApplicationRecord
   # Get all messages in order
   def ordered_messages
     messages
-      .includes(:prompt_manager_prompt_execution)
+      .includes(:prompt_navigator_prompt_execution)
       .order(:created_at)
   end
 
   def ordered_by_descending_prompt_executions
     messages
       .where(role: "user")
-      .includes(:prompt_manager_prompt_execution)
+      .includes(:prompt_navigator_prompt_execution)
       .order(created_at: :desc)
       .to_a
-      .select { |msg| msg.prompt_manager_prompt_execution }
-      .map(&:prompt_manager_prompt_execution)
+      .select { |msg| msg.prompt_navigator_prompt_execution }
+      .map(&:prompt_navigator_prompt_execution)
   end
 
   # Check if chat needs to be reset due to LLM or model change
@@ -134,9 +134,9 @@ class Chat < ApplicationRecord
     last_msg = all_messages.last
 
     # Prepare prompt and context
-    prompt = { role: last_msg.role, prompt: last_msg.prompt_manager_prompt_execution.prompt }
+    prompt = { role: last_msg.role, prompt: last_msg.prompt_navigator_prompt_execution.prompt }
     context = all_messages[0...-1].last(Rails.configuration.summarize_conversation_count).map do |msg|
-      { role: msg.role, prompt: msg.prompt_manager_prompt_execution.prompt, response: msg.prompt_manager_prompt_execution&.response }
+      { role: msg.role, prompt: msg.prompt_navigator_prompt_execution.prompt, response: msg.prompt_navigator_prompt_execution&.response }
     end
 
     if context.empty?
