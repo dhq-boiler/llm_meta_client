@@ -1,7 +1,7 @@
 class ChatsController < ApplicationController
   include ChatManager::ChatManageable
   include ChatManager::CsvDownloadable
-  include PromptManager::HistoryManageable
+  include PromptNavigator::HistoryManageable
   # Allow access without login
   skip_before_action :authenticate_user!, raise: false
   before_action :authenticate_user!, only: [ :update_title, :download_csv, :download_all_csv ]
