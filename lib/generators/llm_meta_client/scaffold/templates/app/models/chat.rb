@@ -129,20 +129,16 @@ class Chat < ApplicationRecord
     # Error if no LLM is available
     raise LlmMetaClient::Exceptions::OllamaUnavailableError, "No LLM available" if llm_options.empty?
 
-    # Prepare messages for LLM
-    all_messages = ordered_messages.to_a
-    last_msg = all_messages.last
+    # Build prompt and context from direct lineage via PromptExecution
+    last_msg = ordered_messages.last
+    pe = last_msg.prompt_manager_prompt_execution
 
-    # Prepare prompt and context
-    prompt = { role: last_msg.role, prompt: last_msg.prompt_navigator_prompt_execution.prompt }
-    context = all_messages[0...-1].last(Rails.configuration.summarize_conversation_count).map do |msg|
-      { role: msg.role, prompt: msg.prompt_navigator_prompt_execution.prompt, response: msg.prompt_navigator_prompt_execution&.response }
-    end
+    prompt = { role: last_msg.role, prompt: pe.prompt }
+    context = pe.build_context(limit: Rails.configuration.summarize_conversation_count)
 
     if context.empty?
       summarized_context = "No context available."
     else
-      # Summarize context
       summarized_context = LlmMetaClient::ServerQuery.new.call(jwt_token, llm_uuid, model, context, "Please summarize the context")
     end
 
