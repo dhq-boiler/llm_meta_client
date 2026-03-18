@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-03-18
+
+### Changed
+
+- Rename `prompt_manager` references to `prompt_navigator` across all scaffold templates (models, controllers, views, migrations, generator config)
+- Refactor chat template to use `PromptExecution#build_context` instead of manual message iteration
+- Update `prompt_navigator` gem to 0.3.0
+
 ## [0.5.0] - 2026-03-17
 
 ### Added
