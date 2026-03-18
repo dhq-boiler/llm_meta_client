@@ -1,10 +1,10 @@
 class PromptsController < ApplicationController
   include ChatManager::ChatManageable
-  include PromptManager::HistoryManageable
+  include PromptNavigator::HistoryManageable
   skip_before_action :authenticate_user!, raise: false
 
   def show
-    @prompt_execution = PromptManager::PromptExecution.includes(:messages).find_by(execution_id: params[:id])
+    @prompt_execution = PromptNavigator::PromptExecution.includes(:messages).find_by(execution_id: params[:id])
     @message = @prompt_execution.messages.first
     @chat = @message.chat
     @messages = @chat.ordered_messages
