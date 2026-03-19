@@ -131,7 +131,7 @@ class Chat < ApplicationRecord
 
     # Build prompt and context from direct lineage via PromptExecution
     last_msg = ordered_messages.last
-    pe = last_msg.prompt_manager_prompt_execution
+    pe = last_msg.prompt_navigator_prompt_execution
 
     prompt = { role: last_msg.role, prompt: pe.prompt }
     context = pe.build_context(limit: Rails.configuration.summarize_conversation_count)
