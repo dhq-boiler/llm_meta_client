@@ -15,13 +15,11 @@ class Chat < ApplicationRecord
       chat = find_by_session_chat_id(session, current_user)
       return chat if llm_uuid.nil? || model.nil?
 
-      # Create new chat if it doesn't exist or LLM/model has changed
-      if llm_uuid.present? && model.present? && (chat.nil? || (chat.present? && chat.needs_reset?(llm_uuid, model)))
-        chat = create!(
-          user: current_user,
-          llm_uuid: llm_uuid,
-          model: model
-        )
+      if chat.present?
+        # Update LLM/model on existing chat if changed
+        chat.update!(llm_uuid: llm_uuid, model: model) if chat.needs_reset?(llm_uuid, model)
+      else
+        chat = create!(user: current_user, llm_uuid: llm_uuid, model: model)
         session[:chat_id] = chat.id
       end
 
