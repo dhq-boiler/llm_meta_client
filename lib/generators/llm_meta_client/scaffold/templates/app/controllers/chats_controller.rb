@@ -189,13 +189,14 @@ class ChatsController < ApplicationController
     params[:tool_ids].presence || []
   end
 
+  ALLOWED_GENERATION_KEYS = %w[temperature top_k top_p max_tokens repeat_penalty].freeze
+
   def generation_settings_param
-    settings = {}
-    settings[:temperature] = params[:temperature].to_f if params[:temperature].present?
-    settings[:top_k] = params[:top_k].to_i if params[:top_k].present?
-    settings[:top_p] = params[:top_p].to_f if params[:top_p].present?
-    settings[:max_tokens] = params[:max_tokens].to_i if params[:max_tokens].present?
-    settings[:repeat_penalty] = params[:repeat_penalty].to_f if params[:repeat_penalty].present?
-    settings
+    return {} if params[:generation_settings_json].blank?
+
+    parsed = JSON.parse(params[:generation_settings_json])
+    parsed.slice(*ALLOWED_GENERATION_KEYS).symbolize_keys
+  rescue JSON::ParserError
+    {}
   end
 end
