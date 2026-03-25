@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-03-25
+
+### Changed
+
+- Replace generation settings UI from individual sliders to JSON textarea input
+- Improve prompt execution branching logic to use `execution_id` instead of message UUID
+- Use `find_by!` for proper 404 handling in controllers
+- Use URL-based chat lookup in `chats#update` instead of session-based lookup
+- Keep existing chat when switching model or LLM (update instead of creating new chat)
+- Upgrade `prompt_navigator` dependency to `~> 1.0`
+- Upgrade `chat_manager` dependency to `~> 1.0`
+
+### Fixed
+
+- Fix Turbo Stream history sidebar element ID mismatch (`history-content` → `history-sidebar`)
+- Fix `next_ann` for proper history card rendering
+- Wrap inline JavaScript in IIFE to prevent variable conflicts across Turbo Stream updates
+- Fix scroll event listener duplication across Turbo navigations
+- Validate generation settings JSON input before sending to LLM
+
 ## [0.6.1] - 2026-03-19
 
 ### Fixed
