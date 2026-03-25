@@ -56,6 +56,7 @@ module LlmMetaClient
       def add_migrations
         migration_template "db/migrate/create_chats.rb", "db/migrate/create_chats.rb"
         migration_template "db/migrate/create_messages.rb", "db/migrate/create_messages.rb"
+        migration_template "db/migrate/migrate_llm_uuid_to_prompt_executions.rb", "db/migrate/migrate_llm_uuid_to_prompt_executions.rb"
       end
 
       def configure_routes
