@@ -117,7 +117,7 @@ module LlmMetaClient
       def ollama_options
         ollama_list = llms.filter { it["family"] == "ollama" }
         raise LlmMetaClient::Exceptions::OllamaUnavailableError if ollama_list.empty?
-        ollama_list
+        ollama_list.each { it["llm_type"] ||= "ollama" }
       end
 
       # Builds normalized option hashes from an array of prompts by slicing common keys
